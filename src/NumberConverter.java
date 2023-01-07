@@ -42,13 +42,7 @@ public class NumberConverter {
         }
         if (base == 16) {
             for (int i = 0; i < digits.length; i++) {
-                int value = 0;
-                if (digits[i] >= 0 && digits[i] <= 9) {
-                    value = digits[i];
-                } else if (digits[i] >= 10 && digits[i] <= 15) {
-                    value = 10 + (digits[i] - 10);
-                }
-                base10[0] = (base10[0] * 16) + value;
+                base10[0] += digits[i] * Math.pow(16, digits.length - (1 + i));
             }
         }
         return base10;
@@ -77,19 +71,15 @@ public class NumberConverter {
 
         }
         if(base == 16){
+            int base10 = 0;
             for (int i = 0; i < digits.length; i++) {
-                int value = 0;
-                if (digits[i] >= 0 && digits[i] <= 9) {
-                    value = digits[i];
-                } else if (digits[i] >= 10 && digits[i] <= 15) {
-                    value = 10 + (digits[i] - 10);
-                }
-                String valueBinary = Integer.toBinaryString(value);
-                while (valueBinary.length() < 4) {
-                    valueBinary = "0" + valueBinary;
-                }
-                base2 += valueBinary;
+                base10 += digits[i] * Math.pow(16, digits.length - (1 + i));
             }
+            while (base10 > 0) {
+                base2 = base10 % 2 + base2;
+                base10 = base10 / 2;
+            }
+
         }
 
         int[] arrayBase2 = new int[base2.length()];
@@ -122,13 +112,7 @@ public class NumberConverter {
         if(base == 16){
             int base10 = 0;
             for (int i = 0; i < digits.length; i++) {
-                int value = 0;
-                if (digits[i] >= 0 && digits[i] <= 9) {
-                    value = digits[i];
-                } else if (digits[i] >= 10 && digits[i] <= 15) {
-                    value = 10 + (digits[i] - 10);
-                }
-                base10 += value * Math.pow(16, digits.length - (1 + i));
+                base10 += digits[i] * Math.pow(8, digits.length - (1 + i));
             }
             while (base10 > 0) {
                 base8 = base10 % 8 + base8;
@@ -143,12 +127,12 @@ public class NumberConverter {
     }
 
 
-    public int[] convertToHexadecimal() {
-        String hex = "";
+    public String[] convertToHexadecimal() {
+        String base16 = "";
+        int count = 0;
         String originalNumberString = displayOriginalNumber().trim();
         int num = Integer.parseInt(originalNumberString);
         if(base == 2){
-            num = 0;
             for (int i = 0; i < digits.length; i++) {
                 if (digits[i] == 1) {
                     num += Math.pow(2, digits.length - (1 + i));
@@ -157,40 +141,49 @@ public class NumberConverter {
             base = 10;
         }
         if(base == 8){
-            num = 0;
             for (int i = 0; i < digits.length; i++) {
                 num += digits[i] * Math.pow(8, digits.length - (1 + i));
             }
             base = 10;
         }
         if (base == 10) {
-            int n = num;
-            while (n > 0) {
-                int remainder = n % 16;
-                char c = ' ';
-                if (remainder >= 0 && remainder <= 9) {
-                    c = (char) ('0' + remainder);
-                } else if (remainder >= 10 && remainder <= 15) {
-                    c = (char) ('A' + (remainder - 10));
-                }
-                hex = c + hex;
-                n /= 16;
+            while (num > 0) {
+                num = num / 16;
+                count++;
+            }
+            num = Integer.parseInt(originalNumberString);
+        }
+        String[] arrayHex = new String[count];
+        if(base == 10){
+            int count2 = count;
+            while (num > 0) {
+                arrayHex[count2 - 1] = num % 16 + base16;
+                num = num / 16;
+                count2--;
             }
 
-            int[] hexInts = new int[hex.length()];
-            for (int i = 0; i < hex.length(); i++) {
-                char c = hex.charAt(i);
-                if (c >= '0' && c <= '9') {
-                    hexInts[i] = c - '0';
-                } else if (c >= 'A' && c <= 'F') {
-                    hexInts[i] = 10 + (c - 'A');
-                }
+        }
+        for (int i = 0; i < count; i++) {
+            if(arrayHex[i].equals("10")) {
+                arrayHex[i] = "A";
+            }
+            if(arrayHex[i].equals("11")) {
+                arrayHex[i] = "B";
+            }
+            if(arrayHex[i].equals("12")) {
+                arrayHex[i] = "C";
+            }
+            if(arrayHex[i].equals("13")) {
+                arrayHex[i] = "D";
+            }
+            if(arrayHex[i].equals("14")) {
+                arrayHex[i] = "E";
+            }
+            if(arrayHex[i].equals("15")) {
+                arrayHex[i] = "F";
             }
         }
-        int[] arrayHex = new int[hex.length()];
-        for (int i = 0; i < hex.length(); i++) {
-            arrayHex[i] = Character.getNumericValue(hex.charAt(i));
-        }
+
         return arrayHex;
     }
 }
