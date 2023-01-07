@@ -185,6 +185,7 @@ public class NumberConverter {
                 arrayHex[i] = "F";
             }
         }
+
         return arrayHex;
     }
 }
