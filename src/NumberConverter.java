@@ -146,6 +146,7 @@ public class NumberConverter {
             }
             base = 10;
         }
+
         if (base == 10) {
             while (num > 0) {
                 num = num / 16;
@@ -154,6 +155,7 @@ public class NumberConverter {
             num = Integer.parseInt(originalNumberString);
         }
         String[] arrayHex = new String[count];
+
         if(base == 10){
             int count2 = count;
             while (num > 0) {
