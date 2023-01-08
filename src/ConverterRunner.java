@@ -45,8 +45,8 @@ class ConverterRunner {
             }
         }
 
-        int n = Integer.parseInt(number);
-
+       // int n = Integer.parseInt(number);
+        String n = number;
         s.close();
 
         NumberConverter nc = new NumberConverter(n, base);
