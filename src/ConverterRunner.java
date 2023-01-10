@@ -28,23 +28,33 @@ class ConverterRunner {
                 }
             }
             System.out.print("Enter a new base(1-64) to convert to: ");
-            int base = s.nextInt();
+            String base = s.nextLine();
 
-            int count = 0;
-            while(count == 0) {
-                if ((base >= 1) && (base <= 64)) {
-                    count = 1;
-                } else {
-                    System.out.println("This is an invalid response. Please try again.");
-                    System.out.print("Enter a new base(1-64) to convert to: ");
-                    base = s.nextInt();
+            for (int i = 0; i < base.length(); i++) {
+                char c = base.charAt(i);
+                if(!((c >= '1' && c <= '9'))){
+                        System.out.println("This is an invalid response. Please try again.");
+                        System.out.print("Enter a new base(1-64) to convert to: ");
+                        base = s.nextLine();
+                        i = -1;
+                    }
+                if((c >= '1' && c <= '9')) {
+                    int base2 = Integer.parseInt(base);
+                    if (!((base2 >= 1) && (base2 <= 64))) {
+                        System.out.println("This is an invalid response. Please try again.");
+                        System.out.print("Enter a new base(1-64) to convert to: ");
+                        base = s.nextLine();
+                        i = -1;
+                    }
                 }
             }
+            int base2 = Integer.parseInt(base);
+
             String n = number;
             s.close();
 
-            NumberConverter nc = new NumberConverter(n, base);
-            System.out.print(nc.getConvertToAnyBase(base));
+            NumberConverter nc = new NumberConverter(n, base2);
+            System.out.print(nc.getConvertToAnyBase(base2));
         }
 
         if (input.equals("basic")) {
