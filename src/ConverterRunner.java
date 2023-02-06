@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.Arrays;
 
 class ConverterRunner {
     public static void main(String[] args) {
